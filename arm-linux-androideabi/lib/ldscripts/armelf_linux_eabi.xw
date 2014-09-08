@@ -6,7 +6,7 @@ ENTRY(_start)
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
-  PROVIDE (__executable_start = 0x00008000); . = 0x00008000 + SIZEOF_HEADERS;
+  PROVIDE (__executable_start = 0x00010000); . = 0x00010000 + SIZEOF_HEADERS;
   .interp         : { *(.interp) }
   .note.gnu.build-id : { *(.note.gnu.build-id) }
   .hash           : { *(.hash) }
@@ -33,8 +33,6 @@ SECTIONS
       PROVIDE_HIDDEN (__rel_iplt_start = .);
       *(.rel.iplt)
       PROVIDE_HIDDEN (__rel_iplt_end = .);
-      PROVIDE_HIDDEN (__rela_iplt_start = .);
-      PROVIDE_HIDDEN (__rela_iplt_end = .);
     }
   .rela.dyn       :
     {
@@ -49,8 +47,6 @@ SECTIONS
       *(.rela.dtors)
       *(.rela.got)
       *(.rela.bss .rela.bss.* .rela.gnu.linkonce.b.*)
-      PROVIDE_HIDDEN (__rel_iplt_start = .);
-      PROVIDE_HIDDEN (__rel_iplt_end = .);
       PROVIDE_HIDDEN (__rela_iplt_start = .);
       *(.rela.iplt)
       PROVIDE_HIDDEN (__rela_iplt_end = .);
@@ -126,7 +122,7 @@ SECTIONS
   {
     KEEP (*crtbegin*.o(.init_array))
     KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
-    KEEP (*(.init_array EXCLUDE_FILE (*crtbegin.o *crtbegin*.o *crtend.o *crtend*.o ) .ctors))
+    KEEP (*(.init_array EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .ctors))
   }
   PROVIDE_HIDDEN (__init_array_end = .);
   PROVIDE_HIDDEN (__fini_array_start = .);
@@ -134,7 +130,7 @@ SECTIONS
   {
     KEEP (*crtbegin*.o(.fini_array))
     KEEP (*(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*)))
-    KEEP (*(.fini_array EXCLUDE_FILE (*crtbegin.o *crtbegin*.o *crtend.o *crtend*.o ) .dtors))
+    KEEP (*(.fini_array EXCLUDE_FILE (*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .dtors))
   }
   PROVIDE_HIDDEN (__fini_array_end = .);
   .ctors          :
